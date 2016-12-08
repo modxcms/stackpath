@@ -1,0 +1,6 @@
+Changelog file for StackPath component.
+
+StackPath 1.0.0
+====================================
+
+- First commit of the StackPath CDN component
