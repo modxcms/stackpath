@@ -11,6 +11,11 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
             'url_preview_param',
             'enabled'
         );
+
+        $accountInfo = explode('.', $options['default_cdn_url']);
+        $accountInfo = explode('-', $accountInfo[0]);
+        $options['alias'] = $accountInfo[count($accountInfo) - 1];
+
         foreach ($settings as $key) {
             if (isset($options[$key])) {
                 $setting = $object->xpdo->getObject('modSystemSetting',array('key' => 'scdn.'.$key));

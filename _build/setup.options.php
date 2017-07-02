@@ -3,10 +3,6 @@ $output = '';
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
         $output = '
-            <label for="scdn_alias">Company Alias</label>
-            <input type="text" name="alias" id="scdn_alias" width="300" value="" />
-            <br /><br />
-
             <label for="scdn_consumer_key">Consumer Key</label>
             <input type="text" name="consumer_key" id="scdn_consumer_key" width="300" value="" />
             <br /><br />
