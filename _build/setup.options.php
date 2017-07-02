@@ -26,10 +26,20 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
             <label for="enabled">Enable StackPath</label>
             <input type="radio" name="enabled" value="1" checked="checked">Yes<br />
             <input type="radio" name="enabled" value="0">No
+            
+            <br /><br />
 
             <label for="rules">Install Default Rules</label>
             <input type="radio" name="rules" value="1" checked="checked">Yes<br />
             <input type="radio" name="rules" value="0">No
+            
+            <br /><br />
+            
+            <label for="use_https">If installing default rules, use HTTPS for the CDN URL?<br />
+            <i>You should leave this as Yes unless you have a specific reason to not use HTTPS.</i>
+            </label>
+            <input type="radio" name="use_https" value="1" checked="checked">Yes<br />
+            <input type="radio" name="use_https" value="0">No
 
         ';
 
