@@ -25,16 +25,7 @@ On installation of the StackPath component, have the following pieces of informa
 
 __Note: It is recommended that you initially select the _disabled_ option on install otherwise the StackPath Linker plugin will be immediately active which may not be desired. Once the component is installed, you can check settings, make any configuration or rule changes and then enable the StackPath integration.__ 
 
-## Difference between CDN Strategies
-### Selective CDN Caching
-
-Selective caching is where you specifically target certain frontend static assets normally served from your site's domain to be served from the CDN domain instead. The MODX StackPath Toolkit supports this approach via a combination of the Rules Manager and the StackPath Linker plugin.
-
-With the Rules Manager, you can either use the default rules (which should satisfy most use cases) or you can be more specific with custom rules, for example, only CDN cache assets in a certain folder or with a certain extension. These rules are applied against content types and can be applied to specific contexts for even granular targeting of assets.
-
-See the section on Basic CDN Sharding to see how custom rules can be used to improve your site's frontend loading performance beyond the advantages already given by caching through StackPath.
-
-#### Default Rules
+## Default Rules
 For the purpose of documentation or if you do not select the 'Install Default Rules' option on install and later decide you want to use them, here are the default rules shipped with the StackPath Toolkit:
 
 __1. Site URL src and href links__
@@ -58,7 +49,7 @@ Replace relative src and href links.
 * Input Rule: ``((?:<(?:a|link|img|script)\b)(?:[^>]+)(?:href|src)=")(?!(?:https?|/))([^>]+\.(?:jpe?g|png|gif|svg|xml|js|css)")``
 * Output Format: ``{match1}{cdn_url}{match2}``
 
-### Web fonts
+## Web fonts
 
 If you want to cache web fonts via StackPath, you can add the extensions to the default rules above but please enable the 'Add CORS Header' option for the StackPath site in their control panel.
 
