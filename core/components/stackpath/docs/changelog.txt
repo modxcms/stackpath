@@ -2,5 +2,7 @@ Changelog file for StackPath component.
 
 StackPath 1.0.0
 ====================================
-
+- Added HTTPS option to setup so default rules can be installed with HTTPS scheme
+- Company Alias now derived from the default CDN URL
+- Lexicon and wording updates to reflect Stackpath nomenclature
 - First commit of the StackPath CDN component
