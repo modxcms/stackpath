@@ -16,7 +16,7 @@ class StackPathHomeManagerController extends StackPathManagerController {
      * @return null|string
      */
     public function getPageTitle() {
-        return $this->modx->lexicon('scdn');
+        return $this->modx->lexicon('stackpath');
     }
 
     /**
@@ -25,11 +25,12 @@ class StackPathHomeManagerController extends StackPathManagerController {
      */
     public function loadCustomCssJs() {
         $this->addHtml('<script type="text/javascript" src="https://www.google.com/jsapi"></script>');
-        $this->addJavascript($this->scdn->config['jsUrl'].'mgr/widgets/combos.js');
-        $this->addJavascript($this->scdn->config['jsUrl'].'mgr/widgets/rules.windows.js');
-        $this->addJavascript($this->scdn->config['jsUrl'].'mgr/widgets/rules.grid.js');
         $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/sections/home.js');
         $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/stackpath.reporting.js');
+        $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/widgets/wafrules.grid.js');
+        $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/widgets/wafevents.grid.js');
+        $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/widgets/wafincident.window.js');
+        $this->addLastJavascript($this->scdn->config['jsUrl'].'mgr/widgets/wafwhitelist.window.js');
     }
 
     /**

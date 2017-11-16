@@ -87,6 +87,19 @@
     font-size: 12px;
 }
 
+#scdn-chart-bar-traffic {
+    clear: both;
+    min-width: 500px;
+    height: 400px;
+    background: #eee;
+    border: 1px solid #aaa;
+    margin: 0 10px 10px 0;
+}
+
+.waf_allow_btn {
+    margin-left: 10px;
+}
+
 .scdn-clear {
     clear: both;
 }

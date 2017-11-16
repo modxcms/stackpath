@@ -2,7 +2,7 @@
 $data = $modx->cacheManager->get('nodes_monthy', $modx->scdn->cacheOptions);
 if (!$data) {
     if ($modx->scdn->authenticate()) {
-        $zone = $modx->getOption('scdn.zone_id', null, '');
+        $zone = $modx->getOption('stackpath.zone_id', null, '');
         $stats = $modx->scdn->api->get('/reports/'.$zone.'/nodes/stats/monthly', array(
             'date_from' => date('Y-m-d', strtotime('-1 month')),
             'date_to' => date('Y-m-d')
@@ -15,7 +15,7 @@ if (!$data) {
 }
 
 $stats = array();
-$stats[] = array($modx->lexicon('scdn.reporting_location'),$modx->lexicon('scdn.reporting_mb_transferred'));
+$stats[] = array($modx->lexicon('stackpath.reporting_location'),$modx->lexicon('stackpath.reporting_mb_transferred'));
 foreach ($data['data']['stats'] as $obj) {
     $loc = $obj['pop_description'];
     $size = round(($obj['size']/1024)/1024, 2);

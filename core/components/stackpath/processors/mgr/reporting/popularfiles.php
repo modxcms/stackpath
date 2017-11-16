@@ -1,7 +1,7 @@
 <?php
 $files = array();
 $data = $modx->cacheManager->get('popularfiles_monthly', $modx->scdn->cacheOptions);
-$zone = $modx->getOption('scdn.zone_id', null, '');
+$zone = $modx->getOption('stackpath.zone_id', null, '');
 
 if (!$data) {
     if ($modx->scdn->authenticate()) {
@@ -24,8 +24,8 @@ foreach ($data['data']['popularfiles'] as $obj) {
 
 $stats = array(
     'cols' => array(
-        array('type' => 'string','name' => $modx->lexicon('scdn.reporting_uri')),
-        array('type' => 'number','name' => $modx->lexicon('scdn.reporting_hits'))
+        array('type' => 'string','name' => $modx->lexicon('stackpath.reporting_uri')),
+        array('type' => 'number','name' => $modx->lexicon('stackpath.reporting_hits'))
     ),
     'rows' => $files
 );

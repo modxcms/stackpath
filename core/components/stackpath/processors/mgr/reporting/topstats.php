@@ -4,7 +4,7 @@ $stats = array();
 $data = $modx->cacheManager->get('stats.daily', $modx->scdn->cacheOptions);
 if (!$data) {
     if ($modx->scdn->authenticate()) {
-        $zone = $modx->getOption('scdn.zone_id', null, '');
+        $zone = $modx->getOption('stackpath.zone_id', null, '');
         $stats = $modx->scdn->api->get('/reports/' . $zone . '/stats/daily', array(
             'date_from' => date('Y-m-d', strtotime('-1 month')),
             'date_to' => date('Y-m-d')

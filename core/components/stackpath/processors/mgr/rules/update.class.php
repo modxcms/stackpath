@@ -13,7 +13,7 @@ class scdnRuleUpdateProcessor extends modObjectUpdateProcessor {
     public function beforeSet() {
         $key = $this->getProperty('name');
         if (empty($key)) {
-            $this->addFieldError('name',$this->modx->lexicon('scdn.error.name_not_set'));
+            $this->addFieldError('name',$this->modx->lexicon('stackpath.error.name_not_set'));
         }
         $this->setCheckbox('disabled', true);
         $this->setCheckbox('all_contexts', true);

@@ -11,7 +11,7 @@ StackPath.page.Home = function(config) {
         ,border: false
         ,components: [{
             xtype: 'panel'
-            ,html: '<h2>'+_('scdn.desc')+'</h2>'
+            ,html: '<h2>'+_('stackpath.menu_desc')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
         },{
@@ -33,19 +33,19 @@ StackPath.page.Home = function(config) {
                     }
                 }
                 ,items: [{
-                    title: _('scdn.reporting')
+                    title: _('stackpath.reporting')
                     ,items: [{
                         html: '<h2 class="scdn-logo"><img src=" ' + StackPath.config.assetsUrl + 'images/sp-logo-light.svg" /></h2>' +
                             '<div class="scdn-top-stat scdn-top-stat-last">' +
-                            '<p class="scdn-top-stat-title">' + _('scdn.reporting_mb_transferred') + '</p>' +
+                            '<p class="scdn-top-stat-title">' + _('stackpath.reporting_mb_transferred') + '</p>' +
                             '<p class="scdn-top-stat-figure" id="scdn-mb-transferred"></p>' +
                             '</div>' +
                             '<div class="scdn-top-stat">' +
-                            '<p class="scdn-top-stat-title">' + _('scdn.reporting_non_cache_hits') + '</p>' +
+                            '<p class="scdn-top-stat-title">' + _('stackpath.reporting_non_cache_hits') + '</p>' +
                             '<p class="scdn-top-stat-figure" id="scdn-non-cache-hits"></p>' +
                             '</div>' +
                             '<div class="scdn-top-stat">' +
-                            '<p class="scdn-top-stat-title"> ' + _('scdn.reporting_cache_hits') + '</p>' +
+                            '<p class="scdn-top-stat-title"> ' + _('stackpath.reporting_cache_hits') + '</p>' +
                             '<p class="scdn-top-stat-figure" id="scdn-cache-hits"></p>' +
                             '</div>' +
                             '<div id="scdn-chart-line-daily"></div>' +
@@ -57,13 +57,55 @@ StackPath.page.Home = function(config) {
                             '<div class="scdn-clear"></div><br />'
                     }]
                 },{
-                    title: _('scdn.rules')
+                    title: _('stackpath.waf_overview')
                     ,items: [{
-                        xtype: 'scdn-grid-rules'
-                        ,preventRender: true
+                        xtype: 'panel'
+                        ,items:[{
+                            layout: 'form'
+                            ,labelWidth: 175
+                            ,labelAlign: 'left'
+                            ,items: [{
+                                html: '<h2 class="scdn-logo"><img src=" ' + StackPath.config.assetsUrl + 'images/sp-logo-light.svg" /></h2>' +
+                                '<div class="scdn-top-stat scdn-top-stat-last">' +
+                                '<p class="scdn-top-stat-title"> ' + _('stackpath.waf_ddos_subsecond_threshold') + '</p>' +
+                                '<p class="scdn-top-stat-figure" id="scdn-ddos-subsecond-threshold"></p>' +
+                                '</div>' +
+                                '<div class="scdn-top-stat">' +
+                                '<p class="scdn-top-stat-title">' + _('stackpath.waf_ddos_burst_threshold') + '</p>' +
+                                '<p class="scdn-top-stat-figure" id="scdn-ddos-global-threshold"></p>' +
+                                '</div>' +
+                                '<div class="scdn-top-stat">' +
+                                '<p class="scdn-top-stat-title">' + _('stackpath.waf_ddos_global_threshold') + '</p>' +
+                                '<p class="scdn-top-stat-figure" id="scdn-ddos-burst-threshold"></p>' +
+                                '</div>' +
+                                '<div class="scdn-top-stat">' +
+                                '<p class="scdn-top-stat-title">' + _('stackpath.waf_status') + '</p>' +
+                                '<p class="scdn-top-stat-figure" id="scdn-waf-status"></p>' +
+                                '</div>' +
+                                '<div class="scdn-clear"></div><br />' +
+                                '<h2>' + _('stackpath.waf_overview') + '</h2>' +
+                                '<div id="scdn-chart-bar-traffic"></div>' +
+                                '<div class="scdn-clear"></div><br />'
+                            }]
+                        }]
+                    },{
+                        xtype: 'panel'
+                        ,html: '<h2>' + _('stackpath.waf_web_rules') + '</h2>'
+                        ,border: false
+                        ,cls: 'modx-page-header'
+                        ,bodyStyle: 'margin-top: 1em;'
+                    },{
+                        xtype:'stackpath-grid-rules'
+                        ,border: false
                     }]
                 },{
-                    title: _('scdn.purge')
+                    title: _('stackpath.waf_events')
+                    ,items: [{
+                        xtype: 'stackpath-grid-events'
+                        ,border: false
+                    }]
+                },{
+                    title: _('stackpath.purge')
                     ,items: this.getPurgeFields(config)
                 }]
                 ,stateful: true
@@ -79,6 +121,8 @@ StackPath.page.Home = function(config) {
                         var idx = tp.items.indexOf(t);
                         if (idx == 0) {
                             refreshReporting();
+                        } else if (idx == 1) {
+                            refreshWAFReporting();
                         }
                     }
                 }
@@ -108,7 +152,7 @@ Ext.extend(StackPath.page.Home,MODx.Component,{
                 }
                 ,items: [{
                     xtype: 'xcheckbox'
-                    ,boxLabel: _('scdn.purge_all')
+                    ,boxLabel: _('stackpath.purge_all')
                     ,hideLabel: true
                     ,id: config.id + 'scdn-purge-all'
                     ,name: 'purge_all'
@@ -123,20 +167,20 @@ Ext.extend(StackPath.page.Home,MODx.Component,{
                     }
                 },{
                     xtype: 'textarea'
-                    ,fieldLabel: _('scdn.purge_files')
+                    ,fieldLabel: _('stackpath.purge_files')
                     ,id: config.id + 'scdn-purge-files'
                     ,name: 'purge_files'
                     ,anchor: '100%'
                     ,width: '100%'
                     ,height: 200
                 },{
-                    html: '<p><i>' + _('scdn.purge_files_desc') + '</i></p>'
+                    html: '<p><i>' + _('stackpath.purge_files_desc') + '</i></p>'
                 }]
             }]
             ,buttonAlign: 'center'
             ,buttons: [{
                 xtype: 'button'
-                ,text: _('scdn.purge')
+                ,text: _('stackpath.purge')
                 ,scope: this
                 ,handler: this.purge
             }]
@@ -155,7 +199,7 @@ Ext.extend(StackPath.page.Home,MODx.Component,{
             ,scope: this
             ,success: function(r) {
                 var response = Ext.decode(r.responseText);
-                MODx.msg.alert(_('scdn.purge'), response.message);
+                MODx.msg.alert(_('stackpath.purge'), response.message);
 
                 Ext.getCmp(this.config.id + 'scdn-purge-all').setValue(false);
                 Ext.getCmp(this.config.id + 'scdn-purge-files').setValue('');

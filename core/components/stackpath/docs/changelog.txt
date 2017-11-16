@@ -1,7 +1,12 @@
-Changelog file for StackPath component.
+Changelog file for StackPath WAF Edition
+
+StackPath 1.0.1
+====================================
+- Fixed generation of auth_header system setting on install
 
 StackPath 1.0.0
 ====================================
+- Added StackPath "Add Manager Auth Header" plugin for passing a header to SP when a user is authenticated in the MODX Manager
 - Added HTTPS option to setup so default rules can be installed with HTTPS scheme
 - Company Alias now derived from the default CDN URL
 - Lexicon and wording updates to reflect Stackpath nomenclature

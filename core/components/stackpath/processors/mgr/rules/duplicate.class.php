@@ -7,7 +7,7 @@ class scdnRuleDuplicateProcessor extends modObjectDuplicateProcessor {
     public $languageTopics = array('stackpath:default');
 
     public function getNewName() {
-        $newName = $this->modx->lexicon('scdn.duplicate_of') . $this->object->get('name');
+        $newName = $this->modx->lexicon('stackpath.duplicate_of') . $this->object->get('name');
         return $newName;
     }
 

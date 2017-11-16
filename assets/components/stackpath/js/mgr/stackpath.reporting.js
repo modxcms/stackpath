@@ -21,7 +21,7 @@ var dailyChart = function() {
                             width: '85%'
                         }
                         ,vAxes: {
-                            0: {title: _('scdn.reporting_hits')}
+                            0: {title: _('stackpath.reporting_hits')}
                         }
                         ,series: {
                             0: {
@@ -68,7 +68,7 @@ var transferChart = function() {
                             width: '85%'
                         }
                         ,vAxes: {
-                            0: {title: _('scdn.reporting_mb_transferred')}
+                            0: {title: _('stackpath.reporting_mb_transferred')}
                         }
                         ,series: {
                             0: {
@@ -213,6 +213,77 @@ var nodes = function() {
     });
 }
 
+var wafStats = function() {
+    Ext.Ajax.request({
+        url: StackPath.config.connectorUrl
+        ,params: {
+            'action' : 'mgr/waf/reporting/topstats'
+        }
+        ,success: function(r) {
+            var tp = Ext.getCmp('scdn-tabs');
+            if (tp) {
+                var t = tp.getActiveTab();
+                var idx = tp.items.indexOf(t);
+                if (idx == 1) {
+                    json = JSON.parse(r.responseText);
+                    Ext.get('scdn-ddos-subsecond-threshold').dom.innerHTML = json.ddos_subsecond_threshold;
+                    Ext.get('scdn-ddos-burst-threshold').dom.innerHTML = json.ddos_burst_threshold;
+                    Ext.get('scdn-ddos-global-threshold').dom.innerHTML = json.ddos_global_threshold;
+                    Ext.get('scdn-waf-status').dom.innerHTML = json.waf_status;
+                }
+            }
+        }
+    });
+}
+
+var wafTraffic = function() {
+    Ext.Ajax.request({
+        url: StackPath.config.connectorUrl
+        ,params: {
+            'action' : 'mgr/waf/reporting/traffic'
+        }
+        ,success: function(r) {
+            var tp = Ext.getCmp('scdn-tabs');
+            if (tp) {
+                var t = tp.getActiveTab();
+                var idx = tp.items.indexOf(t);
+                if (idx == 1) {
+                    var data = new google.visualization.DataTable(r.responseText);
+                    var chart = new google.visualization.LineChart(document.getElementById('scdn-chart-bar-traffic'));
+                    chart.draw(data, {
+                        chartArea: {
+                            width: '85%'
+                        }
+                        ,vAxes: {
+                            0: {title: _('stackpath.waf_count')}
+                        }
+                        ,lineWidth: 3
+                        ,pointSize: 1.3
+                        ,pointWidth: 3
+                        ,legend: {
+                            position: 'top'
+                            ,alignment: 'center'
+                            ,maxLines: 2
+                        }
+                        ,hAxis: {
+                            showTextEvery: 24
+                            ,maxTextLines: 1
+                            ,maxAlternation: 1
+                        }
+                        ,vAxis: {
+                            minValue: 0
+                            ,viewWindow: {
+                                min: 0
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    });
+}
+
+
 var refreshReporting = function() {
     topStats();
     dailyChart();
@@ -222,14 +293,21 @@ var refreshReporting = function() {
     nodes();
 }
 
+var refreshWAFReporting = function() {
+    wafStats();
+    wafTraffic();
+}
+
 Ext.onReady(function() {
-    /* only load reporting if Reporting tab is selected */
+    /* only load reporting if Reporting or WAF Overview tab is selected */
     var tp = Ext.getCmp('scdn-tabs');
     if (tp) {
         var t = tp.getActiveTab();
         var idx = tp.items.indexOf(t);
         if (idx == 0) {
             refreshReporting();
+        } else if (idx == 1) {
+            refreshWAFReporting();
         }
     }
 });
@@ -241,4 +319,6 @@ Ext.EventManager.onWindowResize(function() {
     ratioChart();
     popularFiles();
     nodes();
+    wafStats();
+    wafTraffic();
 });

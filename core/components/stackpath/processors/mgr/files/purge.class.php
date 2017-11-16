@@ -20,17 +20,17 @@ class filesPurgeProcessor extends modProcessor {
                 }
             }
         } else {
-            return $this->modx->error->failure($this->modx->lexicon('scdn.purge_request_no_auth'));
+            return $this->modx->error->failure($this->modx->lexicon('stackpath.purge_request_no_auth'));
         }
 
         if ($response == null) {
-            return $this->modx->error->failure($this->modx->lexicon('scdn.purge_nothing_found'));
+            return $this->modx->error->failure($this->modx->lexicon('stackpath.purge_nothing_found'));
         } else {
             $response = $this->modx->fromJSON($response);
             if ($response['code'] !== 200) {
                 return $this->modx->error->failure($response['error']['type']. ': ' .$response['error']['message']);
             }
-            return $this->modx->error->success($this->modx->lexicon('scdn.purge_request_sent'));
+            return $this->modx->error->success($this->modx->lexicon('stackpath.purge_request_sent'));
         }
     }
 }

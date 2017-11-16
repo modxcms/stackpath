@@ -1,0 +1,103 @@
+{
+  "name": "StackPath WAF Edition",
+  "lowCaseName": "stackpath",
+  "description": "StackPath WAF Integration",
+  "author": "Garry Nutting",
+  "version": "1.0.1-alpha2",
+  "package": {
+    "actions": [{
+      "id": 1,
+      "controller": "index"
+    }],
+    "menus": [
+      {
+        "text": "stackpath",
+        "description": "stackpath.menu_desc",
+        "action": 1
+      }
+    ],
+    "elements": {
+      "plugins": [
+        {
+          "name": "StackPath Add Auth Header",
+          "file": "stackpathauthheader.plugin.php",
+          "events": ["OnMODXInit"]
+        },
+        {
+          "name": "StackPath Purge Cache",
+          "file": "stackpathpurgecache.plugin.php",
+          "events": ["OnSiteRefresh"]
+        },
+        {
+          "name": "StackPath Manager Plugin",
+          "file": "stackpath.plugin.php",
+          "events": ["OnDocFormPrerender"]
+        }
+      ]
+    },
+    "systemSettings": [
+      {
+        "key": "alias",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "consumer_key",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "consumer_secret",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "zone_id",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "default_cdn_url",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "url_preview_param",
+        "area": "API",
+        "type": "textfield",
+        "value": "guid"
+      },
+      {
+        "key": "auth_header_value",
+        "area": "API",
+        "type": "textfield",
+        "value": ""
+      },
+      {
+        "key": "purge_on_clear_cache",
+        "area": "API",
+        "type": "combo-boolean",
+        "value": true
+      },
+      {
+        "key": "enabled",
+        "area": "API",
+        "type": "combo-boolean",
+        "value": false
+      }
+    ]
+  },
+  "build": {
+    "resolver": {
+      "after": ["setupoptions.resolver.php"]
+    },
+    "setupOptions": {
+      "source": "setup.options.php"
+    }
+  }
+}

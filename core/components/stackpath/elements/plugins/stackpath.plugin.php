@@ -2,7 +2,7 @@
 $event = $modx->event->name;
 switch ($event) {
     case 'OnDocFormPrerender':
-        $path = $modx->getOption('scdn.core_path', null, $modx->getOption('core_path') . 'components/stackpath/');
+        $path = $modx->getOption('stackpath.core_path', null, $modx->getOption('core_path') . 'components/stackpath/');
         $stackpath = $modx->getService('stackpath','StackPath', $path.'model/stackpath/');
 
         if ($stackpath->isDisabled()) {
@@ -10,7 +10,7 @@ switch ($event) {
         }
 
         $modx->lexicon->load('stackpath:default');
-        $urlParameter = $modx->getOption('scdn.url_preview_param', null, 'guid');
+        $urlParameter = $modx->getOption('stackpath.url_preview_param', null, 'guid');
 
         $modx->regClientStartupScript('
 				<script type="text/javascript">
@@ -39,7 +39,7 @@ switch ($event) {
 							btns.unshift({
 								xtype: "button"
 								,process: "update"
-								,text: "' . $modx->lexicon('scdn.save_and_purge') . '"
+								,text: "' . $modx->lexicon('stackpath.save_and_purge') . '"
 								,method: "remote"
 								,handler: function() {
 									if (!Ext.getCmp("modx-update-resource-purgecdn")) {
@@ -72,7 +72,7 @@ switch ($event) {
         break;
     case 'OnDocFormSave':
         if (isset($_POST['purge_cdn'])) {
-            $path = $modx->getOption('scdn.core_path', null, $modx->getOption('core_path') . 'components/stackpath/');
+            $path = $modx->getOption('stackpath.core_path', null, $modx->getOption('core_path') . 'components/stackpath/');
             $stackpath = $modx->getService('stackpath','StackPath', $path.'model/stackpath/');
 
             if ($stackpath->isDisabled()) {

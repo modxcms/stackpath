@@ -31,9 +31,9 @@ class StackPath {
     function __construct(modX &$modx,array $config = array()) {
         $this->modx =& $modx;
 
-        $corePath = $this->modx->getOption('scdn.core_path',$config,$this->modx->getOption('core_path').'components/stackpath/');
-        $assetsUrl = $this->modx->getOption('scdn.assets_url',$config,$this->modx->getOption('assets_url').'components/stackpath/');
-        $assetsPath = $this->modx->getOption('scdn.assets_path',$config,$this->modx->getOption('assets_path').'components/stackpath/');
+        $corePath = $this->modx->getOption('stackpath.core_path',$config,$this->modx->getOption('core_path').'components/stackpath/');
+        $assetsUrl = $this->modx->getOption('stackpath.assets_url',$config,$this->modx->getOption('assets_url').'components/stackpath/');
+        $assetsPath = $this->modx->getOption('stackpath.assets_path',$config,$this->modx->getOption('assets_path').'components/stackpath/');
         $this->config = array_merge(array(
             'basePath' => $corePath,
             'corePath' => $corePath,
@@ -51,7 +51,7 @@ class StackPath {
         $modelPath = $this->config['modelPath'];
         $this->modx->addPackage('stackpath',$modelPath, '');
         $this->modx->lexicon->load('stackpath:default');
-        $this->debug = (bool)$this->modx->getOption('scdn.debug',null,false);
+        $this->debug = (bool)$this->modx->getOption('stackpath.debug',null,false);
         $this->autoload();
     }
 
@@ -60,9 +60,9 @@ class StackPath {
     }
 
     public function authenticate() {
-        $alias = $this->modx->getOption('scdn.alias', null, '');
-        $consumerKey = $this->modx->getOption('scdn.consumer_key', null, '');
-        $consumerSecret = $this->modx->getOption('scdn.consumer_secret', null, '');
+        $alias = $this->modx->getOption('stackpath.alias', null, '');
+        $consumerKey = $this->modx->getOption('stackpath.consumer_key', null, '');
+        $consumerSecret = $this->modx->getOption('stackpath.consumer_secret', null, '');
         if (!empty($alias) && !empty($consumerKey) && !empty($consumerSecret)) {
             $this->api = new NetDNA($alias, $consumerKey, $consumerSecret);
             return true;
@@ -71,11 +71,11 @@ class StackPath {
     }
 
     public function isDisabled($checkTV = false) {
-        if ($this->modx->getOption('scdn.enabled', null, false) == false) {
+        if ($this->modx->getOption('stackpath.enabled', null, false) == false) {
             return true;
         }
         if ($checkTV) {
-            $tvName = $this->modx->getOption('scdn.resource_inclusion_tv', null, '');
+            $tvName = $this->modx->getOption('stackpath.resource_inclusion_tv', null, '');
             if (!empty($tvName) && $this->modx->resource !== null) {
                 $include = $this->modx->resource->getTVValue($tvName);
                 if (!$include) {
@@ -87,7 +87,7 @@ class StackPath {
     }
 
     public function purge($params = array()) {
-        $zone = $this->modx->getOption('scdn.zone_id', null, '');
+        $zone = $this->modx->getOption('stackpath.zone_id', null, '');
         if ($this->api == null) {
             $this->authenticate();
         }
@@ -110,6 +110,14 @@ class StackPath {
             'files' => $files
         );
         return $this->purge($params);
+    }
+
+    public function addAuthHeader() {
+        if ($this->modx->user->hasSessionContext('mgr')) {
+            header('X-SP-Auth: ' . $this->modx->getOption('stackpath.auth_header_value', null, ''));
+            return true;
+        }
+        return false;
     }
 }
 
