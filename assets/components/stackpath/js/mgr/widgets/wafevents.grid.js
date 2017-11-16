@@ -15,6 +15,7 @@ StackPath.grid.Events = function(config) {
         }
         ,fields: ['ref_id','incident_id','rule_name', 'client_ip', 'timestamp', 'action', 'country', 'result', 'domain', 'uri', 'method']
         ,autoHeight: true
+        ,width: '100%'
         ,sortBy: 'id'
         ,paging: true
         ,showPerPage: false
@@ -24,12 +25,11 @@ StackPath.grid.Events = function(config) {
             header: _('id')
             ,dataIndex: 'ref_id'
             ,sortable: true
-            ,width: 25
             ,hidden: true
         },{
             header: _('stackpath.rule')
             ,dataIndex: 'rule_name'
-            ,width: 175
+            ,width: 150
             ,sortable: true
         },{
             header: _('stackpath.action')
@@ -44,12 +44,12 @@ StackPath.grid.Events = function(config) {
         },{
             header: _('stackpath.client_ip')
             ,dataIndex: 'client_ip'
-            ,width: 75
+            ,width: 60
             ,sortable: true
         },{
             header: _('stackpath.country')
             ,dataIndex: 'country'
-            ,width: 50
+            ,width: 40
             ,sortable: true
         },{
             header: _('stackpath.date')
@@ -87,7 +87,27 @@ StackPath.grid.Events = function(config) {
                 return String.format('<span id="{0}"></span><span class="waf_allow_btn" id="{1}"></span>', allowId, detailsId);
             }
         }]
-        ,tbar: ['->',{
+        ,tbar: ['->', {
+            xtype: 'stackpath-combo-wafactions'
+            ,text: _('stackpath.action')
+            ,id: 'stackpath-waf-events-action'
+            ,emptyText: _('stackpath.action')
+            ,allowBlank: true
+            ,width: 300
+            ,listeners: {
+                'select': {fn: this.search, scope:this}
+            }
+        },'-', {
+            xtype: 'stackpath-combo-wafresult'
+            ,text: _('stackpath.result')
+            ,id: 'stackpath-waf-events-result'
+            ,emptyText: _('stackpath.result')
+            ,allowBlank: true
+            ,width: 150
+            ,listeners: {
+                'select': {fn: this.search, scope: this}
+            }
+        },'-',{
             xtype: 'textfield'
             ,fieldLabel: _('stackpath.search')
             ,id: 'stackpath-waf-events-search'
@@ -104,6 +124,13 @@ StackPath.grid.Events = function(config) {
                             ,scope: cmp
                         });
                     },scope:this}
+            }
+        },'-',{
+            xtype: 'button'
+            ,id: 'stackpath-event-clearfilter'
+            ,text: _('stackpath.clear')
+            ,listeners: {
+                'click': {fn: this.clearFilter, scope: this}
             }
         }]
     });
@@ -127,7 +154,20 @@ StackPath.grid.Events = function(config) {
 Ext.extend(StackPath.grid.Events,MODx.grid.Grid, {
     search: function(tf,nv,ov) {
         var s = this.getStore();
-        s.baseParams.client_ip = tf.getValue();
+        s.baseParams.client_ip = Ext.getCmp('stackpath-waf-events-search').getValue();
+        s.baseParams.waf_action = Ext.getCmp('stackpath-waf-events-action').getValue();
+        s.baseParams.waf_result = Ext.getCmp('stackpath-waf-events-result').getValue();
+        this.getBottomToolbar().changePage(1);
+        /* this.refresh(); */
+    },
+
+    clearFilter: function() {
+        this.getStore().baseParams = {
+            action: 'mgr/waf/events/getlist'
+        };
+        Ext.getCmp('stackpath-waf-events-search').reset();
+        Ext.getCmp('stackpath-waf-events-action').reset();
+        Ext.getCmp('stackpath-waf-events-result').reset();
         this.getBottomToolbar().changePage(1);
         /* this.refresh(); */
     },
@@ -149,7 +189,13 @@ Ext.extend(StackPath.grid.Events,MODx.grid.Grid, {
             xtype: 'stackpath-window-whitelist'
             ,record: r
             ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
+                'success': {fn:function() {
+                        this.refresh();
+                        var rulesGrid = Ext.getCmp('stackpath-grid-rules');
+                        if (!Ext.isEmpty(rulesGrid)) {
+                            rulesGrid.getStore().load();
+                        }
+                    },scope:this}
             }
         });
 

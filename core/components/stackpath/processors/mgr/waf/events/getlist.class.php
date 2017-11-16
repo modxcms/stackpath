@@ -21,15 +21,32 @@ class scdnWAFEventsGetListProcessor extends modObjectGetListProcessor {
 
 
                 $zone = $this->modx->getOption('stackpath.zone_id', null, '');
-                $json = $this->modx->scdn->api->get('/sites/' . $zone . '/waf/events', array(
+
+                $params = array(
                     'start' => date('Y-m-d 00:00:00', strtotime('-6 days')),
                     'end' => date('Y-m-d 23:59:59'),
                     'page_size' => (int)$_POST['limit'],
                     'page' => floor(($_POST['start']) / $_POST['limit']),
                     'sort_by' => 'timestamp',
-                    'sort_dir' => 'desc',
-                    'filter_client_ip' => isset($_POST['client_ip']) ? $_POST['client_ip'] : ''
-                ));
+                    'sort_dir' => 'desc'
+                );
+
+                if (isset($_POST['client_ip']) && !empty($_POST['client_ip'])) {
+                    $params['filter_client_ip']= $_POST['client_ip'];
+                }
+
+                if (isset($_POST['waf_action']) && !empty($_POST['waf_action'])) {
+                    $action = array_search($_POST['waf_action'], $actions);
+                    if ($action !== null) {
+                        $params['filter_action'] = $_POST['waf_action'];
+                    }
+                }
+
+                if (isset($_POST['waf_result']) && !empty($_POST['waf_result'])) {
+                    $params['filter_result']= $_POST['waf_result'];
+                }
+
+                $json = $this->modx->scdn->api->get('/sites/' . $zone . '/waf/events', $params);
                 $data = $this->modx->fromJSON($json);
 
                 $results = array();
